@@ -266,6 +266,7 @@ export default function AdminDashboard() {
   };
 
   const exportToCSV = () => {
+    // ✅ Solo exportamos los campos que existen
     const headers = ["Nombre", "Teléfono", "Restricciones", "Mensaje", "Fecha"];
     const rows = confirmations.map((item) => [
       item.name,
@@ -274,9 +275,11 @@ export default function AdminDashboard() {
       item.message || "",
       new Date(item.created_at).toLocaleDateString("es-ES"),
     ]);
+
     const csv = [headers, ...rows]
       .map((row) => row.map((f) => `"${f}"`).join(","))
       .join("\n");
+
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);

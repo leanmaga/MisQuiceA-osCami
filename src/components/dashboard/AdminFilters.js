@@ -1,4 +1,3 @@
-// src/components/dashboard/AdminFilters.js
 "use client";
 
 import { Search, Download, Filter } from "lucide-react";
@@ -60,11 +59,9 @@ export default function AdminFilters({
       {/* Contador de resultados */}
       {searchTerm && (
         <div className="mt-4 text-sm text-gray-600">
-          {searchTerm && (
-            <span>
-              Buscando: <strong>{searchTerm}</strong>
-            </span>
-          )}
+          <span>
+            Buscando: <strong>{searchTerm}</strong>
+          </span>
         </div>
       )}
     </div>
