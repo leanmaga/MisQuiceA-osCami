@@ -22,6 +22,12 @@ const coockie = Cookie({
 });
 
 export const metadata = {
+  metadataBase: new URL(
+    process.env.NODE_ENV === "production"
+      ? "https://invitacion-cami.vercel.app" // ← Cambia por tu URL de producción
+      : "http://localhost:3000"
+  ),
+
   title: "Cami - Mis Quince Años",
   description: "Una celebración única - 15 años de Cami",
 
@@ -29,11 +35,11 @@ export const metadata = {
   openGraph: {
     title: "Cami - Mis Quince Años",
     description: "Una celebración única - 15 años de Cami",
-    url: "https://tu-dominio.vercel.app", // Cambia por tu URL
+    url: "/", // Ahora es relativo a metadataBase
     siteName: "Quinceañera de Cami",
     images: [
       {
-        url: "/favicon.ico", // o el path de tu favicon
+        url: "/favicon.ico", // Relativo a metadataBase
         width: 32,
         height: 32,
         alt: "Cami - Mis Quince Años",
@@ -48,7 +54,7 @@ export const metadata = {
     card: "summary",
     title: "Cami - Mis Quince Años",
     description: "Una celebración única - 15 años de Cami",
-    images: ["/favicon.ico"], // o el path de tu favicon
+    images: ["/favicon.ico"], // Relativo a metadataBase
   },
 
   // Meta tags adicionales

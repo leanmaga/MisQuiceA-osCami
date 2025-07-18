@@ -10,7 +10,7 @@ import RSVPSection from "@/components/RSVPSection";
 import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
 import { AudioProvider } from "@/components/AudioContext";
-import ButterflyScrollAnimation from "@/components/ButterflyScrollAnimation ";
+import EpicButterflyBurst from "@/components/EpicButterflyBurst;";
 
 export default function Home() {
   return (
@@ -24,10 +24,9 @@ export default function Home() {
         >
           <Navigation />
 
-          {/* Componente de animación de mariposas */}
-          <ButterflyScrollAnimation />
+          {/* 🦋 EPIC BUTTERFLY BURST - Una sola línea para máxima epicidad */}
+          <EpicButterflyBurst />
 
-          {/* Contenedor principal con control de ancho */}
           <main className="w-full overflow-x-hidden">
             <HeroSection />
             <CountdownSection />
