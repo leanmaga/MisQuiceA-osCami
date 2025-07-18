@@ -10,7 +10,6 @@ import RSVPSection from "@/components/RSVPSection";
 import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
 import { AudioProvider } from "@/components/AudioContext";
-import EpicButterflyBurst from "@/components/EpicButterflyBurst;";
 
 export default function Home() {
   return (
@@ -24,9 +23,7 @@ export default function Home() {
         >
           <Navigation />
 
-          {/* 🦋 EPIC BUTTERFLY BURST - Una sola línea para máxima epicidad */}
-          <EpicButterflyBurst />
-
+          {/* Contenedor principal con control de ancho */}
           <main className="w-full overflow-x-hidden">
             <HeroSection />
             <CountdownSection />

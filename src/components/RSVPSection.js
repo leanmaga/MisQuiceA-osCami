@@ -6,8 +6,6 @@ import {
   Send,
   User,
   Phone,
-  Mail,
-  Users,
   Utensils,
   Heart,
   Loader2,
@@ -19,7 +17,6 @@ import { useQuinceaneraConfig } from "@/hooks/useQuinceaneraConfig";
 export default function RSVPSection() {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
     guests: "1",
     dietary: "",
@@ -52,7 +49,6 @@ export default function RSVPSection() {
 
     let message = `🎉 *CONFIRMACIÓN DE ASISTENCIA - QUINCEAÑERA ${nombre.toUpperCase()}*\n\n`;
     message += `👤 *Nombre:* ${data.name}\n`;
-    message += `📧 *Email:* ${data.email}\n`;
     message += `📱 *Teléfono:* ${data.phone || "No proporcionado"}\n`;
     message += `👥 *Invitados:* ${guestText}\n`;
 
@@ -85,7 +81,6 @@ export default function RSVPSection() {
     const { error } = await supabase.from("rsvp_confirmations").insert([
       {
         name: data.name,
-        email: data.email,
         phone: data.phone || null,
         guests: parseInt(data.guests),
         dietary_restrictions: data.dietary || null,
@@ -115,7 +110,6 @@ export default function RSVPSection() {
       setTimeout(() => {
         setFormData({
           name: "",
-          email: "",
           phone: "",
           guests: "1",
           dietary: "",
@@ -165,7 +159,6 @@ export default function RSVPSection() {
                 <span>Confirmación enviada por WhatsApp</span>
               </div>
               <div className="flex items-center gap-3 text-gray-700">
-                <Mail className="w-5 h-5 text-quince-500" />
                 <span>Te contactaremos para detalles adicionales</span>
               </div>
             </div>
@@ -231,24 +224,6 @@ export default function RSVPSection() {
                   disabled={loading}
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent transition-all disabled:opacity-50"
                   placeholder="Tu nombre completo"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className=" text-gray-700 font-medium mb-2 flex items-center gap-2">
-                  <Mail className="w-5 h-5 text-quince-500" />
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  disabled={loading}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent transition-all disabled:opacity-50"
-                  placeholder="tu@email.com"
                 />
               </div>
 

@@ -2,7 +2,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Trash2, Loader2, Mail, Phone, UserCheck } from "lucide-react";
+import { Users, Trash2, Loader2, Phone, UserCheck } from "lucide-react";
 
 export default function AdminConfirmationsTable({
   filteredConfirmations,
@@ -34,7 +34,7 @@ export default function AdminConfirmationsTable({
                   Nombre
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Contacto
+                  Teléfono
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Invitados
@@ -76,18 +76,17 @@ export default function AdminConfirmationsTable({
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-1">
-                          <Mail className="w-3 h-3 text-gray-400" />
-                          <span className="text-xs">{guest.email}</span>
+                      {guest.phone ? (
+                        <div className="flex items-center gap-2">
+                          <Phone className="w-4 h-4 text-gray-400" />
+                          <span>{guest.phone}</span>
                         </div>
-                        {guest.phone && (
-                          <div className="flex items-center gap-1">
-                            <Phone className="w-3 h-3 text-gray-400" />
-                            <span className="text-xs">{guest.phone}</span>
-                          </div>
-                        )}
-                      </div>
+                      ) : (
+                        <span className="text-gray-400 text-xs flex items-center gap-2">
+                          <Phone className="w-4 h-4 text-gray-300" />
+                          Sin teléfono
+                        </span>
+                      )}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-quince-100 text-quince-800">
