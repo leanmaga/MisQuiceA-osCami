@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import CountdownSection from "@/components/CountdownSection";
@@ -11,6 +10,7 @@ import RSVPSection from "@/components/RSVPSection";
 import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
 import { AudioProvider } from "@/components/AudioContext";
+import ButterflyScrollAnimation from "@/components/ButterflyScrollAnimation ";
 
 export default function Home() {
   return (
@@ -23,6 +23,9 @@ export default function Home() {
           className="w-full min-h-screen bg-gradient-to-br from-quince-50 via-white to-gold-50"
         >
           <Navigation />
+
+          {/* Componente de animación de mariposas */}
+          <ButterflyScrollAnimation />
 
           {/* Contenedor principal con control de ancho */}
           <main className="w-full overflow-x-hidden">
