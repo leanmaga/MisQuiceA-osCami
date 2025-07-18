@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { MapPin, Navigation, Phone, Clock } from "lucide-react";
 import { useQuinceaneraConfig } from "@/hooks/useQuinceaneraConfig";
-import AnimatedButterflies from "./AnimatedButterflies";
 
 export default function LocationSection() {
   const { lugar, direccion, telefono, horaEvento } = useQuinceaneraConfig();
@@ -19,11 +18,6 @@ export default function LocationSection() {
       id="location"
       className="py-20 min-h-screen flex items-center justify-center relative overflow-hidden"
     >
-      <AnimatedButterflies
-        count={20}
-        animationDuration={4}
-        delayBetweenButterflies={0.3}
-      />
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
