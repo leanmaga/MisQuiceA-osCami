@@ -187,8 +187,8 @@ export default function MusicRequests() {
                     type="text"
                     value={songRequest}
                     onChange={(e) => setSongRequest(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent transition-all"
-                    placeholder="Ej: Quinceañera"
+                    className="w-full px-4 py-3 border border-white rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent transition-all"
+                    placeholder="Ej: Soy Cordobés"
                     required
                     disabled={loading}
                   />
@@ -202,8 +202,8 @@ export default function MusicRequests() {
                     type="text"
                     value={artistRequest}
                     onChange={(e) => setArtistRequest(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent transition-all"
-                    placeholder="Ej: Cristian Castro"
+                    className="w-full px-4 py-3 border border-white rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent transition-all"
+                    placeholder="Ej: Rodrigo"
                     disabled={loading}
                   />
                 </div>
@@ -216,7 +216,7 @@ export default function MusicRequests() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent transition-all resize-none"
+                    className="w-full px-4 py-3 border border-white rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent transition-all resize-none"
                     placeholder="¿Por qué es especial esta canción para ti?"
                     disabled={loading}
                   />
@@ -337,8 +337,8 @@ export default function MusicRequests() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <Music className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">
+                  <Music className="w-12 h-12 text-quince-50 mx-auto mb-4" />
+                  <p className="text-quince-50">
                     Aún no hay canciones solicitadas. ¡Sé el primero!
                   </p>
                 </div>

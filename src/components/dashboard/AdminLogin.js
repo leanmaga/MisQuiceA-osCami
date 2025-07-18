@@ -24,9 +24,7 @@ export default function AdminLogin({
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
             Panel de Administración
           </h1>
-          <p className="text-gray-600">
-            Quinceañera {nombre} - Acceso Restringido
-          </p>
+          <p className="text-gray-600">{nombre} - Acceso Restringido</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">

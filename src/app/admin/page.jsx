@@ -5,7 +5,7 @@ export default function AdminPage() {
 }
 
 export const metadata = {
-  title: "Panel de Administración - Quinceañera Isabella",
+  title: "Panel de Administración - Cami",
   description: "Dashboard para gestionar confirmaciones de asistencia",
   robots: "noindex, nofollow", // Evita que Google indexe esta página
 };

@@ -28,21 +28,21 @@ export const metadata = {
       : "http://localhost:3000"
   ),
 
-  title: "Cami - Mis Quince Años",
-  description: "Una celebración única - 15 años de Cami",
+  title: "Cami - Mi 16 Años",
+  description: "Una celebración única - 16 años de Cami",
 
   // Meta tags para redes sociales
   openGraph: {
-    title: "Cami - Mis Quince Años",
-    description: "Una celebración única - 15 años de Cami",
+    title: "Cami - Mis 16 Años",
+    description: "Una celebración única - 16 años de Cami",
     url: "/", // Ahora es relativo a metadataBase
-    siteName: "Quinceañera de Cami",
+    siteName: "16 de Cami",
     images: [
       {
         url: "/favicon.ico", // Relativo a metadataBase
         width: 32,
         height: 32,
-        alt: "Cami - Mis Quince Años",
+        alt: "Cami - Mis 16 Años",
       },
     ],
     locale: "es_ES",
@@ -52,8 +52,8 @@ export const metadata = {
   // Twitter Cards
   twitter: {
     card: "summary",
-    title: "Cami - Mis Quince Años",
-    description: "Una celebración única - 15 años de Cami",
+    title: "Cami - Mis 16 Años",
+    description: "Una celebración única - 16 años de Cami",
     images: ["/favicon.ico"], // Relativo a metadataBase
   },
 
@@ -99,7 +99,7 @@ export default function RootLayout({ children }) {
         <meta name="author" content="Cami" />
         <meta
           name="keywords"
-          content="quinceañera, cami, 15 años, celebración, fiesta"
+          content="16, cami, 16 años, celebración, fiesta"
         />
 
         {/* Preload de recursos importantes */}

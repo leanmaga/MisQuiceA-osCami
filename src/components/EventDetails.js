@@ -86,8 +86,10 @@ export default function EventDetails() {
           viewport={{ once: true }}
           className="mt-16 p-8 glass rounded-3xl text-center"
         >
-          <h3 className="font-elegant text-2xl font-bold text-quince-600 mb-4">
-            ¡Tu presencia es el mejor regalo!
+          <h3 className="font-elegant text-2xl font-bold text-quince-400 mb-4">
+            Tu presencia es muy importante para mi, pero si queres dejarme un
+            detalle te dejo mi alias{" "}
+            <span className="text-quince-600">camii.belen77</span>
           </h3>
         </motion.div>
       </div>
