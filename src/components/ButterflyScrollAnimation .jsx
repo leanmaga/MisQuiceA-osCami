@@ -91,7 +91,7 @@ const ButterflyScrollAnimation = () => {
     const id = Math.random().toString(36).substr(2, 9);
     const startX = Math.random() * (window.innerWidth - 40);
     const duration = 3 + Math.random() * 2; // 3-5 segundos
-    const delay = Math.random() * 0.5; // 0-0.5 segundos de delay
+    const delay = Math.random() * 0.5;
 
     return {
       id,
