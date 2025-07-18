@@ -21,7 +21,6 @@ export const AudioProvider = ({
   const [volume, setVolume] = useState(0.7);
   const [isMuted, setIsMuted] = useState(false);
 
-  // Referencia al elemento audio (SOLO UNO para toda la app)
   const audioRef = useRef(null);
 
   // Función para verificar el estado real del audio
