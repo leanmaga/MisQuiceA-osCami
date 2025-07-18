@@ -28,13 +28,13 @@ export const metadata = {
       : "http://localhost:3000"
   ),
 
-  title: "Cami - Mi 16 Años",
-  description: "Una celebración única - 16 años de Cami",
+  title: "Cami - Mis 16 Años",
+  description: "Una celebración única ",
 
   // Meta tags para redes sociales
   openGraph: {
     title: "Cami - Mis 16 Años",
-    description: "Una celebración única - 16 años de Cami",
+    description: "Una celebración única ",
     url: "/", // Ahora es relativo a metadataBase
     siteName: "16 de Cami",
     images: [
@@ -53,7 +53,7 @@ export const metadata = {
   twitter: {
     card: "summary",
     title: "Cami - Mis 16 Años",
-    description: "Una celebración única - 16 años de Cami",
+    description: "Una celebración única ",
     images: ["/favicon.ico"], // Relativo a metadataBase
   },
 
