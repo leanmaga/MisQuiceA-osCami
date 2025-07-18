@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useQuinceaneraConfig } from "@/hooks/useQuinceaneraConfig";
-import AnimatedButterflies from "./AnimatedButterflies";
 
 export default function RSVPSection() {
   const [formData, setFormData] = useState({
@@ -182,11 +181,6 @@ export default function RSVPSection() {
       id="rsvp"
       className="py-20 min-h-screen flex items-center justify-center relative overflow-hidden"
     >
-      <AnimatedButterflies
-        count={20}
-        animationDuration={4}
-        delayBetweenButterflies={0.3}
-      />
       <div className="max-w-4xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
