@@ -52,14 +52,15 @@ export default function DressCode() {
                 viewport={{ once: true }}
                 className="p-8 border-r border-quince-200/30 flex flex-col justify-center"
               >
-                {/* Imagen del caballero */}
-                <div className="relative h-64 mb-8 rounded-2xl overflow-hidden">
+                {/* Imagen del caballero - FIXED */}
+                <div className="relative h-48 sm:h-56 md:h-64 mb-8 rounded-2xl overflow-hidden bg-gray-100">
                   <Image
                     width={300}
                     height={250}
                     src="/assets/manTraje.jpg"
                     alt="Caballeros"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain md:object-cover"
+                    style={{ objectPosition: "center top" }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-elegant-800/70 to-transparent"></div>
                   <div className="absolute bottom-4 left-4">
@@ -74,7 +75,7 @@ export default function DressCode() {
                 </div>
 
                 <div className="text-center">
-                  <h3 className="font-serif text-3xl font-bold text-elegant-800 mb-4">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-elegant-800 mb-4">
                     Caballeros
                   </h3>
                 </div>
@@ -100,10 +101,10 @@ export default function DressCode() {
                   }}
                   className="mb-8"
                 >
-                  <Crown className="w-20 h-20 text-gold-500" />
+                  <Crown className="w-12 sm:w-16 md:w-20 h-12 sm:h-16 md:h-20 text-gold-500" />
                 </motion.div>
 
-                <h2 className="font-coockie text-4xl font-bold text-gradient-quince mb-6">
+                <h2 className="font-coockie text-2xl sm:text-3xl md:text-4xl font-bold text-gradient-quince mb-6">
                   Elegante
                 </h2>
               </motion.div>
@@ -116,14 +117,15 @@ export default function DressCode() {
                 viewport={{ once: true }}
                 className="p-8 border-l border-quince-200/30 flex flex-col justify-center"
               >
-                {/* Imagen de la dama */}
-                <div className="relative h-64 mb-8 rounded-2xl overflow-hidden">
+                {/* Imagen de la dama - FIXED */}
+                <div className="relative h-48 sm:h-56 md:h-64 mb-8 rounded-2xl overflow-hidden bg-gray-100">
                   <Image
                     width={300}
                     height={250}
                     src="/assets/vestidoMujer.jpg"
                     alt="Damas"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain md:object-cover"
+                    style={{ objectPosition: "center top" }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-quince-600/70 to-transparent"></div>
                   <div className="absolute bottom-4 right-4">
@@ -138,7 +140,7 @@ export default function DressCode() {
                 </div>
 
                 <div className="text-center">
-                  <h3 className="font-serif text-3xl font-bold text-elegant-800 mb-4">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-elegant-800 mb-4">
                     Damas
                   </h3>
                 </div>
@@ -154,7 +156,7 @@ export default function DressCode() {
           viewport={{ once: true }}
           className="mt-16 glass rounded-3xl text-center max-w-3xl mx-auto p-8"
         >
-          <h3 className="font-elegant text-2xl font-bold text-quince-600 mb-4">
+          <h3 className="font-elegant text-xl sm:text-2xl font-bold text-quince-600 mb-4">
             Recuerda que lo más importante es que te sientas cómodo(a) y
             seguro(a) para disfrutar al máximo de esta celebración única.
           </h3>

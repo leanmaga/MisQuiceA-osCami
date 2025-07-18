@@ -91,7 +91,7 @@ const ButterflyScrollAnimation = () => {
     const id = Math.random().toString(36).substr(2, 9);
     const startX = Math.random() * (window.innerWidth - 40);
     const duration = 3 + Math.random() * 2; // 3-5 segundos
-    const delay = Math.random() * 0.5;
+    const delay = Math.random() * 0.5; // 0-0.5 segundos de delay
 
     return {
       id,
@@ -121,16 +121,33 @@ const ButterflyScrollAnimation = () => {
 
   useEffect(() => {
     let isScrolling = false;
+    let scrollSession = false;
+    let sessionTimeout = null;
 
     const handleScroll = () => {
+      // Si ya hay una sesión de scroll activa, no generar más mariposas
+      if (scrollSession) {
+        return;
+      }
+
       if (!isScrolling) {
         isScrolling = true;
+        scrollSession = true;
         generateButterflies();
 
-        // Throttle para evitar demasiadas mariposas
+        // Período de gracia más corto para detectar scroll continuo
         setTimeout(() => {
           isScrolling = false;
-        }, 200);
+        }, 150);
+
+        // Sesión de scroll más larga - agrupa múltiples scrolls rápidos
+        if (sessionTimeout) {
+          clearTimeout(sessionTimeout);
+        }
+
+        sessionTimeout = setTimeout(() => {
+          scrollSession = false;
+        }, 1500); // 1.5 segundos sin scroll para permitir nuevas mariposas
       }
     };
 
@@ -154,6 +171,9 @@ const ButterflyScrollAnimation = () => {
       window.removeEventListener("touchmove", throttledScroll);
       if (scrollTimeout) {
         clearTimeout(scrollTimeout);
+      }
+      if (sessionTimeout) {
+        clearTimeout(sessionTimeout);
       }
     };
   }, [generateButterflies, scrollTimeout]);
