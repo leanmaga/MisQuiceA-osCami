@@ -119,7 +119,6 @@ export default function AdminDashboard() {
   };
 
   const calculateStats = (rsvpData, songsData = songs) => {
-    const totalGuests = rsvpData.reduce((sum, item) => sum + item.guests, 0);
     const withDietary = rsvpData.filter(
       (item) => item.dietary_restrictions
     ).length;
@@ -128,13 +127,10 @@ export default function AdminDashboard() {
 
     setStats({
       totalConfirmations: rsvpData.length,
-      totalGuests,
       withDietary,
       withMessages,
       withPhone,
       totalSongs: songsData.length,
-      avgGuestsPerConfirmation:
-        rsvpData.length > 0 ? (totalGuests / rsvpData.length).toFixed(1) : 0,
     });
   };
 
@@ -270,20 +266,10 @@ export default function AdminDashboard() {
   };
 
   const exportToCSV = () => {
-    const headers = [
-      "Nombre",
-      "Email",
-      "Teléfono",
-      "Invitados",
-      "Restricciones",
-      "Mensaje",
-      "Fecha",
-    ];
+    const headers = ["Nombre", "Teléfono", "Restricciones", "Mensaje", "Fecha"];
     const rows = confirmations.map((item) => [
       item.name,
-      item.email,
       item.phone || "",
-      item.guests,
       item.dietary_restrictions || "",
       item.message || "",
       new Date(item.created_at).toLocaleDateString("es-ES"),
@@ -303,14 +289,13 @@ export default function AdminDashboard() {
   const filteredConfirmations = confirmations.filter((item) => {
     const matchSearch =
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (item.phone && item.phone.includes(searchTerm));
 
     const matchFilter =
       filterGuests === "all" ||
-      (filterGuests === "1" && item.guests === 1) ||
-      (filterGuests === "2+" && item.guests >= 2) ||
-      (filterGuests === "dietary" && item.dietary_restrictions);
+      (filterGuests === "dietary" && item.dietary_restrictions) ||
+      (filterGuests === "message" && item.message) ||
+      (filterGuests === "phone" && item.phone);
 
     return matchSearch && matchFilter;
   });

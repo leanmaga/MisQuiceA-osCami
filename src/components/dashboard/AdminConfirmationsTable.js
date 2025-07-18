@@ -37,9 +37,6 @@ export default function AdminConfirmationsTable({
                   Teléfono
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Invitados
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Restricciones
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
@@ -78,7 +75,7 @@ export default function AdminConfirmationsTable({
                     <td className="px-6 py-4 text-sm text-gray-900">
                       {guest.phone ? (
                         <div className="flex items-center gap-2">
-                          <Phone className="w-4 h-4 text-gray-400" />
+                          <Phone className="w-4 h-4 text-green-500" />
                           <span>{guest.phone}</span>
                         </div>
                       ) : (
@@ -87,12 +84,6 @@ export default function AdminConfirmationsTable({
                           Sin teléfono
                         </span>
                       )}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-900">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-quince-100 text-quince-800">
-                        {guest.guests}{" "}
-                        {guest.guests === 1 ? "persona" : "personas"}
-                      </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900 max-w-xs">
                       {guest.dietary_restrictions ? (

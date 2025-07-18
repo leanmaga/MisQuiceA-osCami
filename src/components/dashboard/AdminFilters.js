@@ -1,57 +1,72 @@
 // src/components/dashboard/AdminFilters.js
 "use client";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { Search, Download, Filter } from "lucide-react";
 
-export default function AdminFilters({ filters, onFilterChange }) {
-  const [localFilters, setLocalFilters] = useState(filters || {});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const newFilters = { ...localFilters, [name]: value };
-    setLocalFilters(newFilters);
-    onFilterChange(newFilters);
-  };
-
+export default function AdminFilters({
+  searchTerm,
+  setSearchTerm,
+  filterGuests,
+  setFilterGuests,
+  exportToCSV,
+  hasData,
+}) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white rounded-2xl shadow-md px-6 py-4 mb-6"
-    >
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        Filtrar Datos
-      </h2>
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Nombre
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={localFilters.name || ""}
-            onChange={handleChange}
-            placeholder="Buscar por nombre"
-            className="mt-1 block w-full rounded-md border border-gray-200 shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-          />
+    <div className="bg-white rounded-2xl shadow-md p-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+        {/* Búsqueda */}
+        <div className="flex-1 max-w-md">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Buscar por nombre o teléfono..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent"
+            />
+          </div>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Restricción
-          </label>
-          <input
-            type="text"
-            name="dietaryRestrictions"
-            value={localFilters.dietaryRestrictions || ""}
-            onChange={handleChange}
-            placeholder="Buscar por restricción"
-            className="mt-1 block w-full rounded-md border border-gray-200 shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-          />
+
+        {/* Filtros y Acciones */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          {/* Filtro */}
+          <div className="relative">
+            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <select
+              value={filterGuests}
+              onChange={(e) => setFilterGuests(e.target.value)}
+              className="pl-10 pr-8 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-quince-500 focus:border-transparent appearance-none bg-white min-w-[180px]"
+            >
+              <option value="all">Todas las confirmaciones</option>
+              <option value="phone">Con teléfono</option>
+              <option value="dietary">Con restricciones</option>
+              <option value="message">Con mensaje</option>
+            </select>
+          </div>
+
+          {/* Exportar */}
+          <button
+            onClick={exportToCSV}
+            disabled={!hasData}
+            className="flex items-center gap-2 px-4 py-2 bg-quince-500 text-white rounded-xl hover:bg-quince-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          >
+            <Download className="w-4 h-4" />
+            Exportar CSV
+          </button>
         </div>
-      </form>
-    </motion.div>
+      </div>
+
+      {/* Contador de resultados */}
+      {searchTerm && (
+        <div className="mt-4 text-sm text-gray-600">
+          {searchTerm && (
+            <span>
+              Buscando: <strong>{searchTerm}</strong>
+            </span>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Send,
@@ -10,6 +10,7 @@ import {
   Heart,
   Loader2,
   AlertCircle,
+  CheckCircle,
 } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useQuinceaneraConfig } from "@/hooks/useQuinceaneraConfig";
@@ -18,13 +19,14 @@ export default function RSVPSection() {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    guests: "1",
     dietary: "",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [existingRSVP, setExistingRSVP] = useState(null);
+  const [checkingExisting, setCheckingExisting] = useState(false);
 
   const { nombre, whatsapp, telefono, fechaLimiteRSVP } =
     useQuinceaneraConfig();
@@ -36,21 +38,78 @@ export default function RSVPSection() {
     );
   }
 
+  // 🔍 Función para verificar si ya existe una confirmación
+  const checkExistingRSVP = async (name, phone) => {
+    if (!name.trim()) return null;
+
+    try {
+      let query = supabase
+        .from("rsvp_confirmations")
+        .select("*")
+        .ilike("name", name.trim());
+
+      // Si también hay teléfono, verificar por teléfono también
+      if (phone && phone.trim()) {
+        const { data: phoneData } = await supabase
+          .from("rsvp_confirmations")
+          .select("*")
+          .eq("phone", phone.trim());
+
+        if (phoneData && phoneData.length > 0) {
+          return phoneData[0];
+        }
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      return data && data.length > 0 ? data[0] : null;
+    } catch (error) {
+      console.error("Error checking existing RSVP:", error);
+      return null;
+    }
+  };
+
+  // 🔍 Verificar RSVP existente cuando cambia el nombre (con debounce)
+  useEffect(() => {
+    const timeoutId = setTimeout(async () => {
+      if (formData.name.trim().length >= 3) {
+        setCheckingExisting(true);
+        const existing = await checkExistingRSVP(formData.name, formData.phone);
+        setExistingRSVP(existing);
+        setCheckingExisting(false);
+
+        // Si ya existe, mostrar como enviado
+        if (existing) {
+          setSubmitted(true);
+        }
+      } else {
+        setExistingRSVP(null);
+      }
+    }, 1000); // Esperar 1 segundo después de que deje de escribir
+
+    return () => clearTimeout(timeoutId);
+  }, [formData.name, formData.phone]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+    // Reset error y submitted cuando cambia el formulario
+    setError("");
+    if (e.target.name === "name" && !e.target.value.trim()) {
+      setSubmitted(false);
+      setExistingRSVP(null);
+    }
   };
 
   const formatWhatsAppMessage = (data) => {
-    const guestText =
-      data.guests === "1" ? "Solo yo" : `${data.guests} personas`;
-
     let message = `🎉 *CONFIRMACIÓN DE ASISTENCIA - QUINCEAÑERA ${nombre.toUpperCase()}*\n\n`;
     message += `👤 *Nombre:* ${data.name}\n`;
     message += `📱 *Teléfono:* ${data.phone || "No proporcionado"}\n`;
-    message += `👥 *Invitados:* ${guestText}\n`;
 
     if (data.dietary) {
       message += `🍽️ *Restricciones alimentarias:* ${data.dietary}\n`;
@@ -82,7 +141,6 @@ export default function RSVPSection() {
       {
         name: data.name,
         phone: data.phone || null,
-        guests: parseInt(data.guests),
         dietary_restrictions: data.dietary || null,
         message: data.message || null,
       },
@@ -94,6 +152,14 @@ export default function RSVPSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Verificar si ya existe antes de enviar
+    const existing = await checkExistingRSVP(formData.name, formData.phone);
+    if (existing) {
+      setExistingRSVP(existing);
+      setSubmitted(true);
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
@@ -104,19 +170,8 @@ export default function RSVPSection() {
       // 2. Enviar por WhatsApp
       sendToWhatsApp(formData);
 
-      // 3. Mostrar confirmación
+      // 3. Mostrar confirmación (SIN resetear después de 5 segundos)
       setSubmitted(true);
-
-      setTimeout(() => {
-        setFormData({
-          name: "",
-          phone: "",
-          guests: "1",
-          dietary: "",
-          message: "",
-        });
-        setSubmitted(false);
-      }, 5000);
     } catch (error) {
       console.error("Error submitting RSVP:", error);
       setError(
@@ -131,8 +186,11 @@ export default function RSVPSection() {
     }
   };
 
-  // 🎉 PANTALLA DE CONFIRMACIÓN (cuando submitted = true)
-  if (submitted) {
+  // 🎉 PANTALLA DE CONFIRMACIÓN (cuando submitted = true o existe RSVP)
+  if (submitted || existingRSVP) {
+    const rsvpData = existingRSVP || formData;
+    const isExisting = !!existingRSVP;
+
     return (
       <section
         id="rsvp"
@@ -145,23 +203,96 @@ export default function RSVPSection() {
             transition={{ duration: 0.8 }}
             className="glass rounded-3xl p-12"
           >
-            <Heart className="w-20 h-20 text-quince-500 mx-auto mb-6" />
-            <h2 className="font-serif text-4xl font-bold text-gray-800 mb-4">
-              ¡Confirmación Enviada!
-            </h2>
-            <p className="text-xl text-gray-600 mb-8">
-              Tu confirmación se envió por WhatsApp y se guardó en nuestro
-              sistema. ¡No podemos esperar a celebrar contigo!
-            </p>
-            <div className="space-y-4 text-left max-w-md mx-auto">
-              <div className="flex items-center gap-3 text-gray-700">
-                <Phone className="w-5 h-5 text-green-500" />
-                <span>Confirmación enviada por WhatsApp</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-700">
-                <span>Te contactaremos para detalles adicionales</span>
-              </div>
+            <div className="flex justify-center mb-6">
+              {isExisting ? (
+                <CheckCircle className="w-20 h-20 text-green-500" />
+              ) : (
+                <Heart className="w-20 h-20 text-quince-500" />
+              )}
             </div>
+
+            <h2 className="font-serif text-4xl font-bold text-gray-800 mb-4">
+              {isExisting
+                ? "¡Ya Confirmaste tu Asistencia!"
+                : "¡Confirmación Enviada!"}
+            </h2>
+
+            <p className="text-xl text-gray-600 mb-8">
+              {isExisting
+                ? `Hola ${rsvpData.name}, ya tienes confirmada tu asistencia a la quinceañera de ${nombre}. ¡Te esperamos!`
+                : `Tu confirmación se envió por WhatsApp y se guardó en nuestro sistema. ¡No podemos esperar a celebrar contigo!`}
+            </p>
+
+            {/* Mostrar datos de la confirmación */}
+            <div className="space-y-4 text-left max-w-md mx-auto mb-8">
+              <div className="flex items-center gap-3 text-gray-700">
+                <User className="w-5 h-5 text-quince-500" />
+                <span>
+                  <strong>Nombre:</strong> {rsvpData.name}
+                </span>
+              </div>
+
+              {rsvpData.phone && (
+                <div className="flex items-center gap-3 text-gray-700">
+                  <Phone className="w-5 h-5 text-green-500" />
+                  <span>
+                    <strong>Teléfono:</strong> {rsvpData.phone}
+                  </span>
+                </div>
+              )}
+
+              {rsvpData.dietary_restrictions && (
+                <div className="flex items-center gap-3 text-gray-700">
+                  <Utensils className="w-5 h-5 text-orange-500" />
+                  <span>
+                    <strong>Restricciones:</strong>{" "}
+                    {rsvpData.dietary_restrictions}
+                  </span>
+                </div>
+              )}
+
+              {rsvpData.message && (
+                <div className="flex items-start gap-3 text-gray-700">
+                  <Heart className="w-5 h-5 text-pink-500 mt-1" />
+                  <span>
+                    <strong>Mensaje:</strong> "{rsvpData.message}"
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-4 text-center">
+              <div className="flex items-center justify-center gap-3 text-gray-700">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <span>Confirmación registrada exitosamente</span>
+              </div>
+
+              {!isExisting && (
+                <div className="flex items-center justify-center gap-3 text-gray-700">
+                  <Phone className="w-5 h-5 text-green-500" />
+                  <span>Enviado por WhatsApp</span>
+                </div>
+              )}
+            </div>
+
+            {/* Botón para modificar (opcional) */}
+            <motion.button
+              onClick={() => {
+                setSubmitted(false);
+                setExistingRSVP(null);
+                setFormData({
+                  name: "",
+                  phone: "",
+                  dietary: "",
+                  message: "",
+                });
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-8 bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Confirmar otra persona
+            </motion.button>
           </motion.div>
         </div>
       </section>
@@ -211,9 +342,12 @@ export default function RSVPSection() {
             <div className="grid md:grid-cols-2 gap-6">
               {/* Name */}
               <div>
-                <label className=" text-gray-700 font-medium mb-2 flex items-center gap-2">
+                <label className="text-gray-700 font-medium mb-2 flex items-center gap-2">
                   <User className="w-5 h-5 text-quince-500" />
                   Nombre Completo *
+                  {checkingExisting && (
+                    <Loader2 className="w-4 h-4 animate-spin text-quince-500" />
+                  )}
                 </label>
                 <input
                   type="text"
@@ -229,7 +363,7 @@ export default function RSVPSection() {
 
               {/* Phone */}
               <div>
-                <label className=" text-gray-700 font-medium mb-2 flex items-center gap-2">
+                <label className="text-gray-700 font-medium mb-2 flex items-center gap-2">
                   <Phone className="w-5 h-5 text-quince-500" />
                   Teléfono
                 </label>
@@ -247,7 +381,7 @@ export default function RSVPSection() {
 
             {/* Dietary restrictions */}
             <div>
-              <label className=" text-gray-700 font-medium mb-2 flex items-center gap-2">
+              <label className="text-gray-700 font-medium mb-2 flex items-center gap-2">
                 <Utensils className="w-5 h-5 text-quince-500" />
                 Restricciones Alimentarias
               </label>
@@ -264,7 +398,7 @@ export default function RSVPSection() {
 
             {/* Message */}
             <div>
-              <label className=" text-gray-700 font-medium mb-2 flex items-center gap-2">
+              <label className="text-gray-700 font-medium mb-2 flex items-center gap-2">
                 <Heart className="w-5 h-5 text-quince-500" />
                 Mensaje Especial para {nombre}
               </label>
