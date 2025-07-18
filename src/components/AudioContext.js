@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useRef,
+  useCallback,
 } from "react";
 
 // Crear el contexto
@@ -23,8 +24,8 @@ export const AudioProvider = ({
 
   const audioRef = useRef(null);
 
-  // Función para verificar el estado real del audio
-  const checkAndSyncState = () => {
+  // 🔧 FIX: Usar useCallback para estabilizar la función
+  const checkAndSyncState = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -38,7 +39,7 @@ export const AudioProvider = ({
     if (audio.readyState >= 2 && isLoading) {
       setIsLoading(false);
     }
-  };
+  }, [isPlaying, isLoading]); // Dependencias de la función
 
   // Configurar el audio cuando se monta el componente
   useEffect(() => {
@@ -84,7 +85,7 @@ export const AudioProvider = ({
       audio.removeEventListener("ended", handleEnded);
       audio.removeEventListener("error", handleError);
     };
-  }, []);
+  }, [checkAndSyncState, volume]); // 🔧 FIX: Agregar dependencies
 
   // Controlar el volumen cuando cambie
   useEffect(() => {

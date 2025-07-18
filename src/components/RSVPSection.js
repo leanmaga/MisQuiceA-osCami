@@ -255,7 +255,7 @@ export default function RSVPSection() {
                 <div className="flex items-start gap-3 text-gray-700">
                   <Heart className="w-5 h-5 text-pink-500 mt-1" />
                   <span>
-                    <strong>Mensaje:</strong> "{rsvpData.message}"
+                    <strong>Mensaje:</strong> {rsvpData.message}
                   </span>
                 </div>
               )}
